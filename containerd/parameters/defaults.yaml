@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  pkg:
+    name: containerd
+  rootgroup: root
+  config: '/etc/containerd'
+  service:
+    name: containerd
+  subcomponent:
+    config: '/etc/containerd-subcomponent-formula.conf'
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...
