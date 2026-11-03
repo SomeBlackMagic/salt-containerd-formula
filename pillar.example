@@ -1,19 +1,88 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
+#
+# Pillar example for the containerd formula.
+# All keys are optional; defaults are in containerd/parameters/defaults.yaml.
 ---
 containerd:
-  pkg:
-    name: containerd.io
-  service:
-    name: containerd
-  config: /etc/containerd/config.toml
+  # paths:
+  #   prefix: /opt/containerd
+  #   bin_dir: /usr/local/bin
+  #   sbin_dir: /usr/local/sbin
+  #   config_dir: /etc/containerd
+  #   certs_dir: /etc/containerd/certs.d
+
+  # keep_versions: 2
+
+  # Override component versions or enable optional components
+  # components:
+  #   containerd:
+  #     version: 2.4.2
+  #   runc:
+  #     version: 1.5.2
+  #   cni:
+  #     enabled: true
+  #   crictl:
+  #     enabled: true
+  #   nerdctl:
+  #     enabled: true
+
+  # Remove conflicting distro packages before install
+  # conflicts:
+  #   packages:
+  #     - containerd
+  #     - containerd.io
+  #     - docker.io
+  #     - docker-ce
+  #     - runc
+  #   remove: false
+
+  # Kernel modules and sysctl for container networking
+  # kernel:
+  #   enabled: true
+  #   modules:
+  #     - overlay
+  #     - br_netfilter
+  #   sysctl:
+  #     net.ipv4.ip_forward: 1
+  #     net.bridge.bridge-nf-call-iptables: 1
+  #     net.bridge.bridge-nf-call-ip6tables: 1
+
+  # /etc/containerd/config.toml (deep-merged with defaults)
+  # config:
+  #   version: 3
+
+  # Drop-in configs in /etc/containerd/conf.d/<name>.toml
+  # config_d: {}
+
+  # Registry mirror / certs.d configuration
+  # registries:
+  #   docker.io:
+  #     server: https://registry-1.docker.io
+  #     hosts:
+  #       https://mirror.example.com:
+  #         capabilities: [pull, resolve]
+  #         ca: ca.crt
+  #     files:
+  #       ca.crt: |
+  #         -----BEGIN CERTIFICATE-----
+  # registries_purge: false
+
+  # Service management
+  # service:
+  #   name: containerd
+  #   state: running
+  #   restart_on_change: true
+  #   environment:
+  #     HTTPS_PROXY: http://proxy.example.com:3128
+  #     NO_PROXY: localhost,127.0.0.1
+  #   overrides: {}
+
+  # Cleanup options
+  # clean:
+  #   purge_data: false
 
   tofs:
-    # The files_switch key serves as a selector for alternative
-    # directories under the formula files directory. See TOFS pattern
-    # doc for more info.
-    # Note: Any value not evaluated by `config.get` will be used literally.
-    # This can be used to set custom paths, as many levels deep as required.
     files_switch:
       - any/path/can/be/used/here
       - id
@@ -21,17 +90,3 @@ containerd:
       - osfinger
       - os
       - os_family
-
-    # All aspects of path/file resolution are customisable using the options below.
-    # This is unnecessary in most cases; there are sensible defaults.
-    # Default path: salt://< path_prefix >/< dirs.files >/< dirs.default >
-    # I.e.: salt://containerd/files/default
-    # path_prefix: template_alt
-    # dirs:
-    #   files: files_alt
-    #   default: default_alt
-    # The entries under `source_files` are prepended to the default source files
-    # given for the state
-    # source_files:
-    #   containerd-config-file-file-managed:
-    #     - 'custom-config.toml'

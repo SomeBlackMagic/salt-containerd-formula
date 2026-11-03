@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set values specific to:
+#   salt['config.get']('osarch') == aarch64.
+#
+# Maps aarch64 (kernel arch) to arm64 (Go/container arch).
+---
+values:
+  arch: arm64
+...

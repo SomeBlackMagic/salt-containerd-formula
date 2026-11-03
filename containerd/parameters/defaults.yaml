@@ -1,13 +1,121 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 #
-# Set default values.
+# Default parameters for the containerd formula.
+# Platform-specific overrides live in os_family/ and osarch/.
+# Pillar values under `containerd:` are deep-merged on top.
 ---
 values:
-  pkg:
-    name: containerd
-  rootgroup: root
-  config: '/etc/containerd/config.toml'
+  # `arch` is set by parameters/osarch/{amd64,arm64,x86_64,aarch64}.yaml
+  # arch: amd64
+
+  paths:
+    prefix: /opt/containerd
+    bin_dir: /usr/local/bin
+    sbin_dir: /usr/local/sbin
+    config_dir: /etc/containerd
+    certs_dir: /etc/containerd/certs.d
+
+  keep_versions: 2
+
+  components:
+    containerd:
+      enabled: true
+      version: 2.4.2
+      url: >-
+        https://github.com/containerd/containerd/releases/download/v{version}/containerd-{version}-linux-{arch}.tar.gz
+      checksums:
+        2.4.2:
+          amd64: 35880c1dd4627e8ce56526bfabb39c144e83458ffdb197ce6f05d17d94d7d91e
+          arm64: fdfab81a86192ddb8165d72f116ec985485c9e12505e323c4f4579c48020f276
+    runc:
+      enabled: true
+      version: 1.5.2
+      url: >-
+        https://github.com/opencontainers/runc/releases/download/v{version}/runc.{arch}
+      checksums:
+        1.5.2:
+          amd64: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
+          arm64: d10ecae898361832a059be2089bab92d158aec54661b18ed7346ed79628b46b0
+    cni:
+      enabled: false
+      version: 1.9.1
+      url: >-
+        https://github.com/containernetworking/plugins/releases/download/v{version}/cni-plugins-linux-{arch}-v{version}.tgz
+      checksums:
+        1.9.1:
+          amd64: b98f74a0f8522f0a83867178729c1aa70f2158f90c45a2ca8fa791db1c76b303
+          arm64: 56171987d3947707c3563db2f4001bccaf50fd63468611b9f3cbecb1375ee7ec
+      dir: /opt/cni/bin
+    crictl:
+      enabled: false
+      version: 1.37.0
+      url: >-
+        https://github.com/kubernetes-sigs/cri-tools/releases/download/v{version}/crictl-v{version}-linux-{arch}.tar.gz
+      checksums:
+        1.37.0:
+          amd64: 67c983ee8a6bbce73d39a186e633c5fe4f8a70e62171ac3bd92a9c1b2c601670
+          arm64: c9dfdf9ebc353a0027c88622206a5e90ee6f0e78cfabf1a9ef4dc575298fd555
+      config:
+        runtime-endpoint: unix:///run/containerd/containerd.sock
+        image-endpoint: unix:///run/containerd/containerd.sock
+    nerdctl:
+      enabled: false
+      version: 2.4.2
+      url: >-
+        https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-{arch}.tar.gz
+      checksums:
+        2.4.2:
+          amd64: 41a66995888043c0ba05f8061574eaba1b9e06b9b21c2a238215179df2728d3f
+          arm64: 6bb9cfe435be3745c079cde6c1fd14d6515a84de2b285993d1d3e2be2c4fa36a
+      config: {}
+
+  conflicts:
+    packages:
+      - containerd
+      - containerd.io
+      - docker.io
+      - docker-ce
+      - runc
+    remove: false
+
+  kernel:
+    enabled: false
+    modules:
+      - overlay
+      - br_netfilter
+    sysctl:
+      net.ipv4.ip_forward: 1
+      net.bridge.bridge-nf-call-iptables: 1
+      net.bridge.bridge-nf-call-ip6tables: 1
+
+  config:
+    version: 3
+    imports:
+      - /etc/containerd/conf.d/*.toml
+    plugins:
+      io.containerd.cri.v1.images:
+        registry:
+          config_path: /etc/containerd/certs.d
+      io.containerd.cri.v1.runtime:
+        containerd:
+          runtimes:
+            runc:
+              runtime_type: io.containerd.runc.v2
+              options:
+                SystemdCgroup: true
+  config_d: {}
+
+  registries: {}
+  registries_purge: false
+
   service:
     name: containerd
+    state: running
+    restart_on_change: true
+    environment: {}
+    overrides: {}
+
+  clean:
+    purge_data: false
 ...

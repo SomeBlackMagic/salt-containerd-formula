@@ -19,11 +19,16 @@ control 'containerd._mapdata' do
   ### Static, adjusted as part of code contributions, as map data is changed
   # Strip the `platform[:finger]` version number down to the "OS major release"
   platform_finger = system.platform[:finger].split('.').first.to_s
-  # Use that to set the path to the file (relative to the InSpec suite directory)
+  # Use the platform-specific file if it exists, otherwise fall back to _default
   mapdata_file_path = "_mapdata/#{platform_finger}.yaml"
+  mapdata_file_content = inspec.profile.file(mapdata_file_path)
+  if mapdata_file_content.empty?
+    mapdata_file_path = '_mapdata/_default.yaml'
+    mapdata_file_content = inspec.profile.file(mapdata_file_path)
+  end
   # Load the mapdata from profile, into a YAML structure
   # https://docs.chef.io/inspec/profiles/#profile-files
-  mapdata_file_yaml = YAML.load(inspec.profile.file(mapdata_file_path))
+  mapdata_file_yaml = YAML.load(mapdata_file_content)
   # Dump the YAML back into a string for comparison
   mapdata_file_dump = YAML.dump(mapdata_file_yaml)
 
