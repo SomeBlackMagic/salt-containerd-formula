@@ -13,11 +13,8 @@ include:
 containerd-config-file-file-managed:
   file.managed:
     - name: {{ containerd.config }}
-    - source: {{ files_switch(['example.tmpl'],
-                              lookup='containerd-config-file-file-managed'
-                 )
-              }}
-    - mode: 644
+    - source: {{ files_switch(['config.toml'], lookup='containerd-config-file-file-managed') }}
+    - mode: '0644'
     - user: root
     - group: {{ containerd.rootgroup }}
     - makedirs: True

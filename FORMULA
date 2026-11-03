@@ -1,9 +1,9 @@
 name: containerd
-os: Debian, Ubuntu, Raspbian, RedHat, Fedora, CentOS, Amazon, Oracle, SUSE, openSUSE, Gentoo, Funtoo, Arch, Manjaro, Alpine, FreeBSD, OpenBSD, Solaris, SmartOS, Windows, MacOS
-os_family: Debian, RedHat, Suse, Gentoo, Arch, Alpine, FreeBSD, OpenBSD, Solaris, Windows, MacOS
+os: Debian, Ubuntu, RedHat, CentOS, Amazon, Oracle, AlmaLinux, Rocky, SUSE, openSUSE
+os_family: Debian, RedHat, Suse
 version: 1.0.0
 release: 1
-minimum_version: 2019.2
+minimum_version: 3006
 summary: containerd formula
-description: Formula to use as a template for other formulas
+description: Formula to install and configure containerd container runtime
 top_level_dir: containerd

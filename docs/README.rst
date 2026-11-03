@@ -18,8 +18,7 @@ containerd-formula
    :scale: 100%
    :target: https://github.com/pre-commit/pre-commit
 
-A SaltStack formula that is empty. It has dummy content to help with a quick
-start on a new formula and it serves as a style guide.
+A SaltStack formula to install and configure the containerd container runtime.
 
 .. contents:: **Table of Contents**
    :depth: 1
@@ -128,28 +127,6 @@ dependency on ``containerd.service.clean`` via include list.
 
 This state will remove the containerd package and has a depency on
 ``containerd.config.clean`` via include list.
-
-``containerd.subcomponent``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*Meta-state (This is a state that includes other states)*.
-
-This state installs a subcomponent configuration file before
-configuring and starting the containerd service.
-
-``containerd.subcomponent.config``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This state will configure the containerd subcomponent and has a
-dependency on ``containerd.config`` via include list.
-
-``containerd.subcomponent.config.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This state will remove the configuration of the containerd subcomponent
-and reload the containerd service by a dependency on
-``containerd.service.running`` via include list and ``watch_in``
-requisite.
 
 Testing
 -------

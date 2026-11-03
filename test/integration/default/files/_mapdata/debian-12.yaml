@@ -2,15 +2,8 @@
 # Debian-12
 ---
 values:
-  added_in_defaults: defaults_value
-  added_in_lookup: lookup_value
-  added_in_pillar: pillar_value
   arch: amd64
-  config: /etc/template-formula.conf
-  lookup:
-    added_in_lookup: lookup_value
-    master: template-master
-    winner: lookup
+  config: /etc/containerd/config.toml
   map_jinja:
     sources:
     - Y:G@osarch
@@ -20,14 +13,11 @@ values:
     - C@containerd:lookup
     - C@containerd
     - Y:G@id
-  master: template-master
   pkg:
-    name: bash
+    name: containerd
   rootgroup: root
   service:
-    name: systemd-journald
-  subcomponent:
-    config: /etc/containerd-subcomponent-formula.conf
+    name: containerd
   tofs:
     files_switch:
     - any/path/can/be/used/here
@@ -36,9 +26,3 @@ values:
     - osfinger
     - os
     - os_family
-    source_files:
-      containerd-config-file-file-managed:
-      - example.tmpl.jinja
-      containerd-subcomponent-config-file-file-managed:
-      - subcomponent-example.tmpl.jinja
-  winner: pillar

@@ -7,12 +7,7 @@ values:
   pkg:
     name: containerd
   rootgroup: root
-  config: '/etc/containerd'
+  config: '/etc/containerd/config.toml'
   service:
     name: containerd
-  subcomponent:
-    config: '/etc/containerd-subcomponent-formula.conf'
-  # Just here for testing
-  added_in_defaults: defaults_value
-  winner: defaults
 ...
