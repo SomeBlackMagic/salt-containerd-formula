@@ -111,7 +111,7 @@ ENV/
 .bundle/
 
 # copied `.md` files used for conversion to `.rst` using `m2r`
-docs/*.md
+#docs/*.md
 
 # Vim
 *.sw?

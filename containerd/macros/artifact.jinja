@@ -1,0 +1,71 @@
+{#- -*- coding: utf-8 -*- #}
+{#- vim: ft=jinja #}
+
+{#-
+    Render states for a versioned downloadable artifact.
+
+    ``component`` is a key in ``containerd.components``.  ``expose`` maps a
+    command name to its path below the versioned artifact directory, and
+    ``target_dir`` is the directory containing the command symlinks.
+#}
+{%- macro artifact(component, kind, expose, target_dir) %}
+{%-   set component_data = containerd.components[component] %}
+{%-   set version = component_data.version %}
+{%-   set arch = containerd.arch %}
+{%-   set checksum = component_data.checksums.get(version, {}).get(arch) %}
+{%-   if not checksum %}
+{{ raise(
+      "Missing checksum for component '{}' version '{}' arch '{}'".format(
+        component, version, arch
+      )
+    ) }}
+{%-   endif %}
+{%-   set source = component_data.url.format(version=version, arch=arch) %}
+{%-   set version_dir = containerd.paths.prefix ~ "/" ~ component ~ "/" ~ version %}
+{%-   set directory_state = "containerd-artifact-" ~ component ~ "-directory" %}
+{%-   set artifact_state = "containerd-artifact-" ~ component ~ "-" ~ kind %}
+
+{{ directory_state }}:
+  file.directory:
+    - name: {{ version_dir }}
+
+{%-   if kind == "tarball" %}
+{{ artifact_state }}:
+  archive.extracted:
+    - name: {{ version_dir }}
+    - source: {{ source }}
+    - source_hash: sha256={{ checksum }}
+    - enforce_toplevel: False
+    - trim_output: True
+    - require:
+      - file: {{ directory_state }}
+{%-   elif kind == "binary" %}
+{%-     if expose | length != 1 %}
+{{ raise("Binary component '{}' must expose exactly one file".format(component)) }}
+{%-     endif %}
+{%-     for _, path in expose.items() %}
+{{ artifact_state }}:
+  file.managed:
+    - name: {{ version_dir }}/{{ path }}
+    - source: {{ source }}
+    - source_hash: sha256={{ checksum }}
+    - mode: '0755'
+    - makedirs: True
+    - require:
+      - file: {{ directory_state }}
+{%-     endfor %}
+{%-   else %}
+{{ raise("Unknown artifact kind '{}' for component '{}'".format(kind, component)) }}
+{%-   endif %}
+
+{%-   for name, path in expose.items() %}
+containerd-artifact-{{ component }}-{{ name }}-symlink:
+  file.symlink:
+    - name: {{ target_dir }}/{{ name }}
+    - target: {{ version_dir }}/{{ path }}
+    - force: True
+    - makedirs: True
+    - require:
+      - {{ "archive" if kind == "tarball" else "file" }}: {{ artifact_state }}
+{%-   endfor %}
+{%- endmacro %}
