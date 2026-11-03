@@ -249,3 +249,31 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/default
+
+  - name: unit
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - containerd._mapdata
+      dependencies:
+        - name: test
+          path: .
+        - name: _serializers
+          path: .
+    verifier:
+      name: shell
+      remote_exec: true
+      command: >-
+        set -e;
+        PY="$(sudo salt-call --local --out=txt grains.get pythonexecutable
+        | sed -n 's/^local: //p')";
+        echo "Using Salt's Python: ${PY}";
+        sudo "${PY}" -m pip --version >/dev/null 2>&1
+        || sudo "${PY}" -m ensurepip --upgrade;
+        sudo PIP_BREAK_SYSTEM_PACKAGES=1 "${PY}" -m pip install --quiet
+        --disable-pip-version-check
+        -r /tmp/kitchen/srv/salt/test/unit/requirements.txt;
+        cd /tmp;
+        sudo "${PY}" -m pytest -p no:cacheprovider -ra
+        /tmp/kitchen/srv/salt/test/unit
