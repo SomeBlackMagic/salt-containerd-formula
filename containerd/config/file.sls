@@ -12,7 +12,7 @@ include:
 
 containerd-config-file-file-managed:
   file.managed:
-    - name: {{ containerd.config }}
+    - name: {{ containerd.paths.config_dir }}/config.toml
     - source: {{ files_switch(['config.toml'], lookup='containerd-config-file-file-managed') }}
     - mode: '0644'
     - user: root

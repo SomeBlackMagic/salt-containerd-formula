@@ -4,4 +4,3 @@
 include:
   - .package
   - .config
-  - .service

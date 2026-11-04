@@ -11,6 +11,6 @@ include:
 
 containerd-config-clean-file-absent:
   file.absent:
-    - name: {{ containerd.config }}
+    - name: {{ containerd.paths.config_dir }}/config.toml
     - require:
       - sls: {{ sls_service_clean }}

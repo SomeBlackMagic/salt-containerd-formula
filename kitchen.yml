@@ -7,6 +7,12 @@ driver:
   use_sudo: false
   privileged: true
   run_command: /usr/lib/systemd/systemd
+  provision_command:
+    # Workaround for RHEL-based images: SSSD is configured (via authselect) but
+    # not running in containers, and /etc/shadow has 000 permissions which blocks
+    # unix_chkpwd (it drops DAC_OVERRIDE). This breaks SSH and sudo for `kitchen`.
+    - if [ -f /etc/nsswitch.conf ]; then sed -i '/^passwd:/s/sss //;/^group:/s/sss //' /etc/nsswitch.conf; fi
+    - chmod 0640 /etc/shadow 2>/dev/null; true
 
 provisioner:
   name: salt_solo

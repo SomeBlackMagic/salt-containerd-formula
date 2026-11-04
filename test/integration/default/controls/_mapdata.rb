@@ -21,7 +21,11 @@ control 'containerd._mapdata' do
   platform_finger = system.platform[:finger].split('.').first.to_s
   # Use the platform-specific file if it exists, otherwise fall back to _default
   mapdata_file_path = "_mapdata/#{platform_finger}.yaml"
-  mapdata_file_content = inspec.profile.file(mapdata_file_path)
+  begin
+    mapdata_file_content = inspec.profile.file(mapdata_file_path)
+  rescue StandardError
+    mapdata_file_content = ''
+  end
   if mapdata_file_content.empty?
     mapdata_file_path = '_mapdata/_default.yaml'
     mapdata_file_content = inspec.profile.file(mapdata_file_path)

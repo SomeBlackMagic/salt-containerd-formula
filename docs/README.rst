@@ -80,14 +80,19 @@ Available states
 
 *Meta-state (This is a state that includes other states)*.
 
-This installs the containerd package,
+This installs the pinned containerd binaries,
 manages the containerd configuration file and then
 starts the associated containerd service.
 
 ``containerd.package``
 ^^^^^^^^^^^^^^^^^^^^^^
 
-This state will install the containerd package only.
+This state extracts the pinned containerd tarball into
+``<prefix>/containerd/<version>/`` and links ``containerd``,
+``containerd-shim-runc-v2`` and ``ctr`` from ``paths.bin_dir``. Set
+``components.containerd.enabled: false`` to skip installation. The version,
+download URL, checksums, prefix and binary directory are configurable through
+the ``containerd`` Pillar; see ``pillar.example`` and ``parameters/defaults.yaml``.
 
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -125,8 +130,9 @@ dependency on ``containerd.service.clean`` via include list.
 ``containerd.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the containerd package and has a depency on
-``containerd.config.clean`` via include list.
+This state removes the three managed binary links and the currently selected
+version directory after ``containerd.config.clean``. Older version directories
+remain available for rollback.
 
 Testing
 -------

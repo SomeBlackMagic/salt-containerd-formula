@@ -132,3 +132,45 @@ def test_missing_checksum_stops_render_with_component_version_and_arch(mapdata):
             "/usr/local/sbin",
             mapdata,
         )
+
+
+# ---------------------------------------------------------------------------
+# Install SLS render tests (moved from test_package_install.py)
+# ---------------------------------------------------------------------------
+
+
+def _render_install(enabled):
+    """Render the install SLS with a minimal map and the real artifact macro."""
+    loader = jinja2.ChoiceLoader(
+        [
+            jinja2.DictLoader(
+                {
+                    "containerd/map.jinja": "{% set mapdata = test_mapdata %}",
+                }
+            ),
+            jinja2.FileSystemLoader(str(REPO_ROOT)),
+        ]
+    )
+    environment = jinja2.Environment(loader=loader)
+    template = environment.get_template("containerd/package/install.sls")
+    return yaml.safe_load(
+        template.render(
+            tpldir="containerd/package",
+            test_mapdata={
+                "arch": "amd64",
+                "paths": {"prefix": "/opt/containerd", "bin_dir": "/usr/local/bin"},
+                "components": {
+                    "containerd": {
+                        "enabled": enabled,
+                        "version": "2.4.2",
+                        "url": "https://example.test/{version}/{arch}.tar.gz",
+                        "checksums": {"2.4.2": {"amd64": "abc123"}},
+                    }
+                },
+            },
+        )
+    )
+
+
+def test_disabled_component_emits_no_install_states():
+    assert _render_install(False) is None

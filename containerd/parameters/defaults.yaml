@@ -9,6 +9,8 @@ values:
   # `arch` is set by parameters/osarch/{amd64,arm64,x86_64,aarch64}.yaml
   # arch: amd64
 
+  rootgroup: root
+
   paths:
     prefix: /opt/containerd
     bin_dir: /usr/local/bin

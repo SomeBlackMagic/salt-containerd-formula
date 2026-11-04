@@ -104,6 +104,7 @@ values:
     sbin_dir: /usr/local/sbin
   registries: {}
   registries_purge: false
+  rootgroup: root
   service:
     environment: {}
     name: containerd
