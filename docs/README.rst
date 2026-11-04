@@ -124,8 +124,23 @@ via include list.
 ``containerd.service``
 ^^^^^^^^^^^^^^^^^^^^^^
 
-This state will start the containerd service and has a dependency on ``containerd.config``
-via include list.
+This state includes ``containerd.service.unit`` and
+``containerd.service.running``. The unit state installs
+``/etc/systemd/system/<service.name>.service`` and its
+``<service.name>.service.d/override.conf`` drop-in. Both files use TOFS sources.
+When either file changes, Salt runs ``systemctl daemon-reload`` before managing
+the service. The running state also includes ``containerd.config.file`` and
+restarts the service when the config, unit, or drop-in changes.
+
+``service.environment`` adds variables to the drop-in's ``[Service]`` section
+(for example ``HTTPS_PROXY`` and ``NO_PROXY``). ``service.overrides`` adds
+other ``[Service]`` directives, such as ``LimitNOFILE: 1048576``. Both default
+to empty mappings. The service name defaults to ``containerd`` and the unit's
+``ExecStart`` uses ``paths.bin_dir``.
+
+``containerd.service.unit`` can be applied directly to install the unit and
+drop-in without starting the service. Its package install dependency ensures
+the configured binary is present.
 
 ``containerd.clean``
 ^^^^^^^^^^^^^^^^^^^^
