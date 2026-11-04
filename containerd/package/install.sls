@@ -3,10 +3,13 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import mapdata as containerd with context %}
+{%- from tplroot ~ "/map.jinja" import mapdata as settings with context %}
 {%- from tplroot ~ "/macros/artifact.jinja" import artifact with context %}
 
-{%- if containerd.components.containerd.enabled %}
+{%- if settings.components.containerd.enabled %}
+include:
+  - {{ tplroot }}.preflight
+
 {{ artifact(
   'containerd',
   'tarball',
@@ -15,6 +18,6 @@
     'containerd-shim-runc-v2': 'bin/containerd-shim-runc-v2',
     'ctr': 'bin/ctr',
   },
-  containerd.paths.bin_dir,
+  settings.paths.bin_dir,
 ) }}
 {%- endif %}

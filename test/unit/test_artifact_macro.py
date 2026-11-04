@@ -22,7 +22,7 @@ def render_artifact(component, kind, expose, target_dir, mapdata):
     )
     return template.render(
         component=component,
-        containerd=mapdata,
+        settings=mapdata,
         expose=expose,
         kind=kind,
         target_dir=target_dir,

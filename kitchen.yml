@@ -239,6 +239,18 @@ verifier:
     - cli
 
 suites:
+  - name: preflight
+    includes:
+      - debian-12-3008-5
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - containerd._mapdata
+    verifier:
+      inspec_tests:
+        - path: test/integration/preflight
+
   - name: default
     provisioner:
       state_top:

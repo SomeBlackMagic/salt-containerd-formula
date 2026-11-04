@@ -84,6 +84,16 @@ This installs the pinned containerd binaries,
 manages the containerd configuration file and then
 starts the associated containerd service.
 
+``containerd.preflight``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state checks that the mapped architecture is ``amd64`` or ``arm64``.
+By default it fails when any package in ``conflicts.packages`` is installed.
+Set ``conflicts.remove: true`` to remove those packages with ``pkg.removed``.
+The default package list is ``containerd``, ``containerd.io``, ``docker.io``,
+``docker-ce`` and ``runc``. The package installation state requires preflight
+to succeed before it creates any artifact directories.
+
 ``containerd.package``
 ^^^^^^^^^^^^^^^^^^^^^^
 

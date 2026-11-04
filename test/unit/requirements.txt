@@ -1,5 +1,7 @@
 # Requirements for the unit tests under `test/unit/`
 pytest>=7
 hypothesis>=6
+Jinja2>=3
+PyYAML>=6
 # Reference TOML parser used to validate the serializer output
 tomli>=2; python_version < "3.11"
