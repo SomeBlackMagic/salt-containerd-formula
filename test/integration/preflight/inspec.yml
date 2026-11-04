@@ -1,0 +1,8 @@
+---
+name: containerd-preflight
+title: Containerd preflight integration tests
+maintainer: SaltStack Formulas
+license: Apache-2.0
+summary: Verify preflight failure and package removal behavior
+supports:
+  - platform-name: debian
