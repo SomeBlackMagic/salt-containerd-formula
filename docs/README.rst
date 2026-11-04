@@ -80,7 +80,7 @@ Available states
 
 *Meta-state (This is a state that includes other states)*.
 
-This installs the pinned containerd binaries,
+This installs the pinned containerd and runc binaries,
 manages the containerd configuration file and then
 starts the associated containerd service.
 
@@ -103,6 +103,17 @@ This state extracts the pinned containerd tarball into
 ``components.containerd.enabled: false`` to skip installation. The version,
 download URL, checksums, prefix and binary directory are configurable through
 the ``containerd`` Pillar; see ``pillar.example`` and ``parameters/defaults.yaml``.
+
+``containerd.runc``
+^^^^^^^^^^^^^^^^^^^
+
+This state includes ``containerd.runc.install``. When
+``components.runc.enabled`` is true (the default), the install state downloads
+the pinned binary to ``<prefix>/runc/<version>/runc`` with mode ``0755`` and
+links it from ``paths.sbin_dir``. The download uses the configured URL and
+``components.runc.checksums[version][arch]``. A missing checksum stops rendering.
+Set ``components.runc.enabled: false`` to skip runc installation. Applying
+``containerd.runc`` by itself does not start the containerd service.
 
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^

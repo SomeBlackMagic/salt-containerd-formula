@@ -19,7 +19,12 @@ containerd:
   #   containerd:
   #     version: 2.4.2
   #   runc:
+  #     enabled: true
   #     version: 1.5.2
+  #     url: https://github.com/opencontainers/runc/releases/download/v{version}/runc.{arch}
+  #     checksums:
+  #       1.5.2:
+  #         amd64: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
   #   cni:
   #     enabled: true
   #   crictl:

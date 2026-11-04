@@ -3,4 +3,5 @@
 
 include:
   - .package
+  - .runc
   - .config
