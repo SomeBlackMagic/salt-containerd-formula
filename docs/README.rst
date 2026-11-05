@@ -118,7 +118,8 @@ Set ``components.runc.enabled: false`` to skip runc installation. Applying
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 
-This state includes ``containerd.config.file`` and ``containerd.config.dropins``.
+This state includes ``containerd.config.file``, ``containerd.config.dropins``
+and ``containerd.config.registries``.
 It serializes the merged ``containerd:config`` Pillar and formula defaults to
 ``<paths.config_dir>/config.toml`` with the ``containerd_toml`` serializer.
 Set a key to ``null`` in Pillar to omit that key from the TOML output.
@@ -130,6 +131,14 @@ under ``<paths.config_dir>/conf.d/``. The entry name becomes the filename with
 ``.toml`` appended. It removes files in that directory that are absent from
 ``config_d``. The default ``config.toml`` imports these files. Applying this
 state by itself does not start the service.
+
+``containerd.config.registries`` writes ``hosts.toml`` and the files in each
+``registries.<host>.files`` mapping under ``<paths.certs_dir>/<host>/``. The
+``hosts`` mapping becomes the TOML ``host`` table; ``files`` is excluded from
+``hosts.toml``. Files are owned by root and have mode ``0644``. Unlisted files
+inside a managed host directory are removed. Other host directories are kept
+unless ``registries_purge: true`` is set. Applying this state does not start
+or restart the service.
 
 ``containerd.service``
 ^^^^^^^^^^^^^^^^^^^^^^

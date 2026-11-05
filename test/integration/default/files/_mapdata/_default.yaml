@@ -104,7 +104,17 @@ values:
     config_dir: /etc/containerd
     prefix: /opt/containerd
     sbin_dir: /usr/local/sbin
-  registries: {}
+  registries:
+    docker.io:
+      files:
+        ca.crt: "-----BEGIN CERTIFICATE-----\ntest-ca-only\n-----END CERTIFICATE----- "
+      hosts:
+        https://mirror.example.com:
+          ca: ca.crt
+          capabilities:
+            - pull
+            - resolve
+      server: https://registry-1.docker.io
   registries_purge: false
   rootgroup: root
   service:

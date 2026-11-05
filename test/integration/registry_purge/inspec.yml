@@ -1,0 +1,4 @@
+name: registry_purge
+title: Registry purge behavior
+supports:
+  - platform-name: debian

@@ -255,6 +255,9 @@ suites:
         - path: test/integration/preflight
 
   - name: default
+    lifecycle:
+      pre_converge:
+        - remote: sudo mkdir -p /etc/containerd/certs.d/unmanaged.example
     provisioner:
       dependencies:
         - name: _serializers
@@ -267,6 +270,26 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/default
+
+  - name: registry-purge
+    includes:
+      - debian-12-3008-5
+    lifecycle:
+      pre_converge:
+        - remote: sudo mkdir -p /etc/containerd/certs.d/unmanaged.example
+    provisioner:
+      pillars_from_directories:
+        - test/salt/pillar/registry_purge
+      dependencies:
+        - name: _serializers
+          path: .
+      state_top:
+        base:
+          '*':
+            - containerd.config.registries
+    verifier:
+      inspec_tests:
+        - path: test/integration/registry_purge
 
   - name: unit
     lifecycle:
