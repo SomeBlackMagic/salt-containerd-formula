@@ -68,7 +68,9 @@ values:
                 SystemdCgroup: true
               runtime_type: io.containerd.runc.v2
     version: 3
-  config_d: {}
+  config_d:
+    20-oom-score:
+      oom_score: -500
   conflicts:
     packages:
     - containerd

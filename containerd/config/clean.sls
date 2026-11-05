@@ -14,3 +14,9 @@ containerd-config-clean-file-absent:
     - name: {{ containerd.paths.config_dir }}/config.toml
     - require:
       - sls: {{ sls_service_clean }}
+
+containerd-config-clean-dropins-absent:
+  file.absent:
+    - name: {{ containerd.paths.config_dir }}/conf.d
+    - require:
+      - sls: {{ sls_service_clean }}

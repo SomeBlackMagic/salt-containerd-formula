@@ -64,7 +64,9 @@ containerd:
   #   #       config_path: /etc/containerd/certs.d
 
   # Drop-in configs in /etc/containerd/conf.d/<name>.toml
-  # config_d: {}
+  # config_d:
+  #   20-oom-score:
+  #     oom_score: -500
 
   # Registry mirror / certs.d configuration
   # registries:

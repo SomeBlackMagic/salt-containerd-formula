@@ -118,12 +118,18 @@ Set ``components.runc.enabled: false`` to skip runc installation. Applying
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 
-This state includes ``containerd.config.file``. It serializes the merged
-``containerd:config`` Pillar and formula defaults to
+This state includes ``containerd.config.file`` and ``containerd.config.dropins``.
+It serializes the merged ``containerd:config`` Pillar and formula defaults to
 ``<paths.config_dir>/config.toml`` with the ``containerd_toml`` serializer.
 Set a key to ``null`` in Pillar to omit that key from the TOML output.
 The file state depends on ``containerd.package.install`` and can be applied
 without starting the service.
+
+``containerd.config.dropins`` writes one TOML file for each ``config_d`` entry
+under ``<paths.config_dir>/conf.d/``. The entry name becomes the filename with
+``.toml`` appended. It removes files in that directory that are absent from
+``config_d``. The default ``config.toml`` imports these files. Applying this
+state by itself does not start the service.
 
 ``containerd.service``
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -168,6 +174,7 @@ This state will stop the containerd service and disable it at boot time.
 
 This state will remove the configuration of the containerd service and has a
 dependency on ``containerd.service.clean`` via include list.
+It also removes the ``conf.d`` directory after stopping the service.
 
 ``containerd.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
