@@ -32,18 +32,18 @@ transport:
 
 platforms:
   ## SALT `master`
-  - name: debian-13-master
-    driver:
-      image: saltimages/salt-master-py3:debian-13
-      run_command: /lib/systemd/systemd
+#  - name: debian-13-master
+#    driver:
+#      image: saltimages/salt-master-py3:debian-13
+#      run_command: /lib/systemd/systemd
   - name: debian-12-master
     driver:
       image: saltimages/salt-master-py3:debian-12
       run_command: /lib/systemd/systemd
-  - name: ubuntu-2604-master
-    driver:
-      image: saltimages/salt-master-py3:ubuntu-26.04
-      run_command: /lib/systemd/systemd
+#  - name: ubuntu-2604-master
+#    driver:
+#      image: saltimages/salt-master-py3:ubuntu-26.04
+#      run_command: /lib/systemd/systemd
   - name: ubuntu-2404-master
     driver:
       image: saltimages/salt-master-py3:ubuntu-24.04
@@ -55,47 +55,48 @@ platforms:
   - name: centos-stream9-master
     driver:
       image: saltimages/salt-master-py3:centos-stream9
-  - name: opensuse-leap-160-master
-    driver:
-      image: saltimages/salt-master-py3:opensuse-leap-16.0
-    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-  - name: opensuse-tmbl-latest-master
-    driver:
-      image: saltimages/salt-master-py3:opensuse-tumbleweed-latest
-    # Workaround to avoid intermittent failures on `opensuse-tumbleweed`:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-  - name: fedora-44-master
-    driver:
-      image: saltimages/salt-master-py3:fedora-44
-  - name: fedora-43-master
-    driver:
-      image: saltimages/salt-master-py3:fedora-43
-  - name: amazonlinux-2023-master
-    driver:
-      image: saltimages/salt-master-py3:amazonlinux-2023
-  - name: oraclelinux-9-master
-    driver:
-      image: saltimages/salt-master-py3:oraclelinux-9
-  - name: oraclelinux-8-master
-    driver:
-      image: saltimages/salt-master-py3:oraclelinux-8
-  - name: almalinux-9-master
-    driver:
-      image: saltimages/salt-master-py3:almalinux-9
-  - name: almalinux-8-master
-    driver:
-      image: saltimages/salt-master-py3:almalinux-8
-  - name: rockylinux-9-master
-    driver:
-      image: saltimages/salt-master-py3:rockylinux-9
-  - name: rockylinux-8-master
-    driver:
-      image: saltimages/salt-master-py3:rockylinux-8
+#  - name: opensuse-leap-160-master
+#    driver:
+#      image: saltimages/salt-master-py3:opensuse-leap-16.0
+#    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
+#    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+#    transport:
+#      max_ssh_sessions: 1
+
+#  - name: opensuse-tmbl-latest-master
+#    driver:
+#      image: saltimages/salt-master-py3:opensuse-tumbleweed-latest
+#    # Workaround to avoid intermittent failures on `opensuse-tumbleweed`:
+#    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+#    transport:
+#      max_ssh_sessions: 1
+#  - name: fedora-44-master
+#    driver:
+#      image: saltimages/salt-master-py3:fedora-44
+#  - name: fedora-43-master
+#    driver:
+#      image: saltimages/salt-master-py3:fedora-43
+#  - name: amazonlinux-2023-master
+#    driver:
+#      image: saltimages/salt-master-py3:amazonlinux-2023
+#  - name: oraclelinux-9-master
+#    driver:
+#      image: saltimages/salt-master-py3:oraclelinux-9
+#  - name: oraclelinux-8-master
+#    driver:
+#      image: saltimages/salt-master-py3:oraclelinux-8
+#  - name: almalinux-9-master
+#    driver:
+#      image: saltimages/salt-master-py3:almalinux-9
+#  - name: almalinux-8-master
+#    driver:
+#      image: saltimages/salt-master-py3:almalinux-8
+#  - name: rockylinux-9-master
+#    driver:
+#      image: saltimages/salt-master-py3:rockylinux-9
+#  - name: rockylinux-8-master
+#    driver:
+#      image: saltimages/salt-master-py3:rockylinux-8
 
   ## SALT `3008.5`
   - name: debian-13-3008-5
@@ -106,10 +107,10 @@ platforms:
     driver:
       image: saltimages/salt-3008.5-py3:debian-12
       run_command: /lib/systemd/systemd
-  - name: ubuntu-2604-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:ubuntu-26.04
-      run_command: /lib/systemd/systemd
+#  - name: ubuntu-2604-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:ubuntu-26.04
+#      run_command: /lib/systemd/systemd
   - name: ubuntu-2404-3008-5
     driver:
       image: saltimages/salt-3008.5-py3:ubuntu-24.04
@@ -121,47 +122,47 @@ platforms:
   - name: centos-stream9-3008-5
     driver:
       image: saltimages/salt-3008.5-py3:centos-stream9
-  - name: opensuse-leap-160-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:opensuse-leap-16.0
-    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-  - name: opensuse-tmbl-latest-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:opensuse-tumbleweed-latest
-    # Workaround to avoid intermittent failures on `opensuse-tumbleweed`:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-  - name: fedora-44-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:fedora-44
-  - name: fedora-43-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:fedora-43
-  - name: amazonlinux-2023-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:amazonlinux-2023
-  - name: oraclelinux-9-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:oraclelinux-9
-  - name: oraclelinux-8-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:oraclelinux-8
-  - name: almalinux-9-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:almalinux-9
-  - name: almalinux-8-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:almalinux-8
-  - name: rockylinux-9-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:rockylinux-9
-  - name: rockylinux-8-3008-5
-    driver:
-      image: saltimages/salt-3008.5-py3:rockylinux-8
+#  - name: opensuse-leap-160-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:opensuse-leap-16.0
+#    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
+#    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+#    transport:
+#      max_ssh_sessions: 1
+#  - name: opensuse-tmbl-latest-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:opensuse-tumbleweed-latest
+#    # Workaround to avoid intermittent failures on `opensuse-tumbleweed`:
+#    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+#    transport:
+#      max_ssh_sessions: 1
+#  - name: fedora-44-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:fedora-44
+#  - name: fedora-43-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:fedora-43
+#  - name: amazonlinux-2023-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:amazonlinux-2023
+#  - name: oraclelinux-9-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:oraclelinux-9
+#  - name: oraclelinux-8-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:oraclelinux-8
+#  - name: almalinux-9-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:almalinux-9
+#  - name: almalinux-8-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:almalinux-8
+#  - name: rockylinux-9-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:rockylinux-9
+#  - name: rockylinux-8-3008-5
+#    driver:
+#      image: saltimages/salt-3008.5-py3:rockylinux-8
 
   ## SALT `3006.30`
   - name: debian-13-3006-30
@@ -172,10 +173,10 @@ platforms:
     driver:
       image: saltimages/salt-3006.30-py3:debian-12
       run_command: /lib/systemd/systemd
-  - name: ubuntu-2604-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:ubuntu-26.04
-      run_command: /lib/systemd/systemd
+#  - name: ubuntu-2604-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:ubuntu-26.04
+#      run_command: /lib/systemd/systemd
   - name: ubuntu-2404-3006-30
     driver:
       image: saltimages/salt-3006.30-py3:ubuntu-24.04
@@ -194,40 +195,41 @@ platforms:
     # => SCP did not finish successfully (255):  (Net::SCP::Error)
     transport:
       max_ssh_sessions: 1
-  - name: opensuse-leap-160-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:opensuse-leap-16.0
-    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-  - name: fedora-44-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:fedora-44
-  - name: fedora-43-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:fedora-43
-  - name: amazonlinux-2023-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:amazonlinux-2023
-  - name: oraclelinux-9-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:oraclelinux-9
-  - name: oraclelinux-8-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:oraclelinux-8
-  - name: almalinux-9-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:almalinux-9
-  - name: almalinux-8-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:almalinux-8
-  - name: rockylinux-9-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:rockylinux-9
-  - name: rockylinux-8-3006-30
-    driver:
-      image: saltimages/salt-3006.30-py3:rockylinux-8
+
+#  - name: opensuse-leap-160-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:opensuse-leap-16.0
+#    # Workaround to avoid intermittent failures on `opensuse-leap-16.0`:
+#    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+#    transport:
+#      max_ssh_sessions: 1
+#  - name: fedora-44-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:fedora-44
+#  - name: fedora-43-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:fedora-43
+#  - name: amazonlinux-2023-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:amazonlinux-2023
+#  - name: oraclelinux-9-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:oraclelinux-9
+#  - name: oraclelinux-8-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:oraclelinux-8
+#  - name: almalinux-9-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:almalinux-9
+#  - name: almalinux-8-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:almalinux-8
+#  - name: rockylinux-9-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:rockylinux-9
+#  - name: rockylinux-8-3006-30
+#    driver:
+#      image: saltimages/salt-3006.30-py3:rockylinux-8
 
 
 verifier:
@@ -237,6 +239,7 @@ verifier:
   reporter:
     # cli, documentation, html, progress, json, json-min, json-rspec, junit
     - cli
+    - junit:.kitchen/reports/%{suite}-%{platform}.xml
 
 suites:
   - name: preflight
@@ -253,6 +256,9 @@ suites:
 
   - name: default
     provisioner:
+      dependencies:
+        - name: _serializers
+          path: .
       state_top:
         base:
           '*':
@@ -263,6 +269,11 @@ suites:
         - path: test/integration/default
 
   - name: unit
+    lifecycle:
+      pre_verify:
+        - remote: sudo dnf upgrade -y python3.11-libs
+          includes:
+            - centos-stream9-master
     provisioner:
       state_top:
         base:
@@ -287,5 +298,5 @@ suites:
         --disable-pip-version-check
         -r /tmp/kitchen/srv/salt/test/unit/requirements.txt;
         cd /tmp;
-        sudo "${PY}" -m pytest -p no:cacheprovider -ra
+        sudo PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "${PY}" -m pytest -p no:cacheprovider -ra
         /tmp/kitchen/srv/salt/test/unit

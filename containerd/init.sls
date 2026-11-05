@@ -5,3 +5,4 @@ include:
   - .package
   - .runc
   - .config
+  - .service

@@ -56,6 +56,12 @@ containerd:
   # /etc/containerd/config.toml (deep-merged with defaults)
   # config:
   #   version: 3
+  #   # Set a default key to null to omit it from the serialized TOML.
+  #   # imports: null
+  #   # plugins:
+  #   #   io.containerd.cri.v1.images:
+  #   #     registry:
+  #   #       config_path: /etc/containerd/certs.d
 
   # Drop-in configs in /etc/containerd/conf.d/<name>.toml
   # config_d: {}

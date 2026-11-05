@@ -118,8 +118,12 @@ Set ``components.runc.enabled: false`` to skip runc installation. Applying
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 
-This state will configure the containerd service and has a dependency on ``containerd.install``
-via include list.
+This state includes ``containerd.config.file``. It serializes the merged
+``containerd:config`` Pillar and formula defaults to
+``<paths.config_dir>/config.toml`` with the ``containerd_toml`` serializer.
+Set a key to ``null`` in Pillar to omit that key from the TOML output.
+The file state depends on ``containerd.package.install`` and can be applied
+without starting the service.
 
 ``containerd.service``
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -130,7 +134,9 @@ This state includes ``containerd.service.unit`` and
 ``<service.name>.service.d/override.conf`` drop-in. Both files use TOFS sources.
 When either file changes, Salt runs ``systemctl daemon-reload`` before managing
 the service. The running state also includes ``containerd.config.file`` and
-restarts the service when the config, unit, or drop-in changes.
+restarts the service when the config, unit, or drop-in changes. Setting
+``service.restart_on_change: false`` makes the config file a prerequisite
+without watching it for changes.
 
 ``service.environment`` adds variables to the drop-in's ``[Service]`` section
 (for example ``HTTPS_PROXY`` and ``NO_PROXY``). ``service.overrides`` adds

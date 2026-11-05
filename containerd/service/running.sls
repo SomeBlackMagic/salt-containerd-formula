@@ -17,7 +17,12 @@ containerd-service-running-service-running:
     - enable: True
     - require:
       - cmd: containerd-service-unit-daemon-reload
-    - watch:
+{%- if not containerd.service.restart_on_change %}
       - file: containerd-config-file-file-managed
+{%- endif %}
+    - watch:
+{%- if containerd.service.restart_on_change %}
+      - file: containerd-config-file-file-managed
+{%- endif %}
       - file: containerd-service-unit-file-managed
       - file: containerd-service-unit-dropin-file-managed

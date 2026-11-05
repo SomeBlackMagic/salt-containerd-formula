@@ -57,58 +57,39 @@ end
 # Conflict removal (remove: true) — Debian-only fixture
 # ---------------------------------------------------------------------------
 
-# Helper: build and install a disposable .deb fixture package so the removal
-# control has a safe, isolated target that does not affect the test host.
-fixture_pkg   = 'containerd-preflight-fixture'
-fixture_setup = <<~SH
-  set -eu
-  dir=$(mktemp -d)
-  trap 'rm -rf "$dir"' EXIT
-  mkdir -p "$dir/package/DEBIAN"
-  cat > "$dir/package/DEBIAN/control" <<CTRL
-  Package: #{fixture_pkg}
-  Version: 1.0
-  Architecture: all
-  Maintainer: Formula tests <tests@example.invalid>
-  Description: Disposable preflight test fixture
-  CTRL
-  dpkg-deb --build "$dir/package" "$dir/package.deb" >/dev/null
-  sudo dpkg -i "$dir/package.deb" >/dev/null
-SH
-
-control 'containerd.preflight.remove_conflict_setup' do
-  title 'Install a disposable fixture package for the removal test'
-
-  describe command(fixture_setup) do
-    its('exit_status') { should eq 0 }
-  end
-
-  describe package(fixture_pkg) do
-    it { should be_installed }
-  end
-end
-
 control 'containerd.preflight.remove_conflict' do
-  title 'The removal option removes an installed conflicting package'
+  title 'The removal option removes a conflict and is idempotent'
 
+  fixture_pkg = 'containerd-preflight-fixture'
   pillar = %('{"containerd":{"conflicts":{"remove":true,"packages":["#{fixture_pkg}"]}}}')
+  exercise_removal = <<~SH
+    set -eu
+    dir=$(mktemp -d)
+    trap 'rm -rf "$dir"' EXIT
+    mkdir -p "$dir/package/DEBIAN"
+    cat > "$dir/package/DEBIAN/control" <<CTRL
+    Package: #{fixture_pkg}
+    Version: 1.0
+    Architecture: all
+    Maintainer: Formula tests <tests@example.invalid>
+    Description: Disposable preflight test fixture
+    CTRL
+    dpkg-deb --build "$dir/package" "$dir/package.deb" >/dev/null
+    sudo dpkg -i "$dir/package.deb" >/dev/null
+    #{salt_call} #{state} pillar=#{pillar} > "$dir/first.json"
+    if sudo dpkg-query -W -f='${Status}' #{fixture_pkg} 2>/dev/null | grep -q '^install ok installed$'; then
+      echo 'Fixture package remains installed after removal'
+      exit 1
+    fi
+    echo 'Fixture package removed'
+    #{salt_call} #{state} pillar=#{pillar} > "$dir/second.json"
+    grep -q 'All specified packages are already absent' "$dir/second.json"
+    echo 'Removal is idempotent'
+  SH
 
-  describe command("#{salt_call} #{state} pillar=#{pillar}") do
+  describe command(exercise_removal) do
     its('exit_status') { should eq 0 }
-  end
-
-  describe package(fixture_pkg) do
-    it { should_not be_installed }
-  end
-end
-
-control 'containerd.preflight.remove_conflict_idempotent' do
-  title 'Re-running removal when the package is already absent is idempotent'
-
-  pillar = %('{"containerd":{"conflicts":{"remove":true,"packages":["#{fixture_pkg}"]}}}')
-
-  describe command("#{salt_call} #{state} pillar=#{pillar}") do
-    its('exit_status') { should eq 0 }
-    its('stdout') { should match(/All specified packages are already absent/) }
+    its('stdout') { should include 'Fixture package removed' }
+    its('stdout') { should include 'Removal is idempotent' }
   end
 end
