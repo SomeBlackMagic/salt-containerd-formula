@@ -32,4 +32,13 @@ control 'containerd.service.running' do
     it { should be_enabled }
     it { should be_running }
   end
+
+  describe file('/run/containerd/containerd.sock') do
+    it { should be_socket }
+  end
+
+  describe command('ctr version') do
+    its('exit_status') { should eq 0 }
+    its('stdout') { should match(/Server:/) }
+  end
 end

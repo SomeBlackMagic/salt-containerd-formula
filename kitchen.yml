@@ -242,6 +242,23 @@ verifier:
     - junit:.kitchen/reports/%{suite}-%{platform}.xml
 
 suites:
+  - name: service-enabled
+    includes:
+      - debian-12-3008-5
+    provisioner:
+      pillars_from_directories:
+        - test/salt/pillar/service_enabled
+      dependencies:
+        - name: _serializers
+          path: .
+      state_top:
+        base:
+          '*':
+            - containerd.service
+    verifier:
+      inspec_tests:
+        - path: test/integration/service_enabled
+
   - name: preflight
     includes:
       - debian-12-3008-5

@@ -149,9 +149,13 @@ This state includes ``containerd.service.unit`` and
 ``<service.name>.service.d/override.conf`` drop-in. Both files use TOFS sources.
 When either file changes, Salt runs ``systemctl daemon-reload`` before managing
 the service. The running state also includes ``containerd.config.file`` and
-restarts the service when the config, unit, or drop-in changes. Setting
-``service.restart_on_change: false`` makes the config file a prerequisite
-without watching it for changes.
+restarts the service when the containerd archive, executable symlink, config,
+unit, or drop-in changes. Setting ``service.restart_on_change: false`` makes
+these resources prerequisites without restarting the service when they change.
+The default ``service.state: running`` enables and starts the service.
+``service.state: enabled`` installs and enables it without starting it. Other
+values fail during rendering. When running, the socket is at
+``/run/containerd/containerd.sock`` and ``ctr version`` reports a server.
 
 ``service.environment`` adds variables to the drop-in's ``[Service]`` section
 (for example ``HTTPS_PROXY`` and ``NO_PROXY``). ``service.overrides`` adds
