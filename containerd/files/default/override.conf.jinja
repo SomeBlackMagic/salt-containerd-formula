@@ -1,0 +1,7 @@
+[Service]
+{% for key, value in containerd.service.environment | dictsort %}
+Environment={{ (key ~ '=' ~ value|string) | json }}
+{% endfor %}
+{% for key, value in containerd.service.overrides | dictsort %}
+{{ key }}={{ value }}
+{% endfor %}
