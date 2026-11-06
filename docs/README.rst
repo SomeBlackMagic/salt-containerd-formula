@@ -120,6 +120,21 @@ This state extracts the pinned containerd tarball into
 ``components.containerd.enabled: false`` to skip installation. The version,
 download URL, checksums, prefix and binary directory are configurable through
 the ``containerd`` Pillar; see ``pillar.example`` and ``parameters/defaults.yaml``.
+The package state also includes ``containerd.package.retention``. After a
+successful archive extraction, retention keeps the selected version and the
+``keep_versions`` most recently modified older version directories under
+``<paths.prefix>/containerd/``. The default is two; set it to zero to keep
+only the selected version. Retention considers immediate directories whose
+names start with a digit, does not follow symlinks, and leaves binary links
+unchanged. Set an older version in Pillar to roll back while its directory is
+still retained.
+
+``containerd.package.retention``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state can be applied directly to prune older containerd version
+directories after installing the selected version. It requires
+``containerd-artifact-containerd-tarball`` before removing a directory.
 
 ``containerd.runc``
 ^^^^^^^^^^^^^^^^^^^
