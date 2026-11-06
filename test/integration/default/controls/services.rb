@@ -37,7 +37,7 @@ control 'containerd.service.running' do
     it { should be_socket }
   end
 
-  describe command('ctr version') do
+  describe command('/usr/local/bin/ctr version') do
     its('exit_status') { should eq 0 }
     its('stdout') { should match(/Server:/) }
   end

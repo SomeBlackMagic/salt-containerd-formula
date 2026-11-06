@@ -1,0 +1,11 @@
+---
+name: full
+title: Full containerd formula installation
+maintainer: SaltStack Formulas
+license: Apache-2.0
+summary: Verify optional components and runtime operation
+depends:
+  - name: share
+    path: test/integration/share
+supports:
+  - platform-name: debian
