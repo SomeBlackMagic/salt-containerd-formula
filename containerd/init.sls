@@ -7,5 +7,6 @@ include:
   - .runc
   - .cni
   - .crictl
+  - .nerdctl
   - .config
   - .service

@@ -1,0 +1,9 @@
+name: nerdctl
+title: nerdctl installation and configuration
+maintainer: SaltStack Formulas
+license: Apache-2.0
+depends:
+  - name: share
+    path: test/integration/share
+supports:
+  - platform-name: debian

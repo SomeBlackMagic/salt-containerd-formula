@@ -161,6 +161,23 @@ not start containerd; ``crictl info`` requires a running CRI service.
 Apply ``containerd.crictl.clean`` explicitly to remove the config file,
 binary symlink and configured version directory.
 
+``containerd.nerdctl``
+^^^^^^^^^^^^^^^^^^^^^^
+
+This state includes ``containerd.nerdctl.install`` and
+``containerd.nerdctl.config``. Set ``components.nerdctl.enabled: true`` to
+extract the minimal nerdctl tarball into
+``<paths.prefix>/nerdctl/<version>/`` and link ``nerdctl`` into
+``paths.bin_dir``. The artifact uses ``components.nerdctl.version``, ``url``
+and ``checksums[version][arch]``; a missing checksum stops rendering.
+The config state serializes ``components.nerdctl.config`` as TOML to
+``/etc/nerdctl/nerdctl.toml`` with root ownership and mode ``0644``.
+Applying this state alone does not start containerd; ``nerdctl version``
+shows server information when the containerd service is running.
+Apply ``containerd.nerdctl.clean`` explicitly to remove the config file,
+binary symlink and configured version directory. Other version directories
+and files in ``/etc/nerdctl`` are retained.
+
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 

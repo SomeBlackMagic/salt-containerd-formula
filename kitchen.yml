@@ -242,6 +242,23 @@ verifier:
     - junit:.kitchen/reports/%{suite}-%{platform}.xml
 
 suites:
+  - name: nerdctl
+    includes:
+      - debian-12-3008-5
+    provisioner:
+      pillars_from_directories:
+        - test/salt/pillar/nerdctl
+      dependencies:
+        - name: _serializers
+          path: .
+      state_top:
+        base:
+          '*':
+            - containerd
+    verifier:
+      inspec_tests:
+        - path: test/integration/nerdctl
+
   - name: crictl
     includes:
       - debian-12-3008-5
