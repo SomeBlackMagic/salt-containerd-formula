@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_config_clean = tplroot ~ '.config.clean' %}
-{%- from tplroot ~ "/map.jinja" import mapdata as containerd with context %}
+{%- from tplroot ~ '/map.jinja' import mapdata as settings with context %}
 
 include:
-  - {{ sls_config_clean }}
+  - {{ tplroot }}.config.clean
 
 {%- for name in ['containerd', 'containerd-shim-runc-v2', 'ctr'] %}
 containerd-package-clean-{{ name }}-symlink-absent:
   file.absent:
-    - name: {{ containerd.paths.bin_dir }}/{{ name }}
+    - name: {{ (settings.paths.bin_dir ~ '/' ~ name) | json }}
     - require:
-      - sls: {{ sls_config_clean }}
+      - sls: {{ tplroot }}.config.clean
 {%- endfor %}
 
 containerd-package-clean-version-directory-absent:
   file.absent:
-    - name: {{ containerd.paths.prefix }}/containerd/{{ containerd.components.containerd.version }}
+    - name: {{ (settings.paths.prefix ~ '/containerd') | json }}
     - require:
 {%- for name in ['containerd', 'containerd-shim-runc-v2', 'ctr'] %}
       - file: containerd-package-clean-{{ name }}-symlink-absent
 {%- endfor %}
-    - require:
-      - sls: {{ sls_config_clean }}

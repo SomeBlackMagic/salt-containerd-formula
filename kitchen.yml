@@ -242,6 +242,52 @@ verifier:
     - junit:.kitchen/reports/%{suite}-%{platform}.xml
 
 suites:
+  - name: clean-purge
+    includes:
+      - debian-12-3008-5
+    lifecycle:
+      pre_verify:
+        - remote: sudo mkdir -p /var/lib/containerd && sudo touch /var/lib/containerd/clean-fixture
+        - remote: >-
+            sudo salt-call --local --config-dir /tmp/kitchen/etc/salt
+            state.apply containerd.clean
+            pillar='{"containerd":{"clean":{"purge_data":true}}}'
+    provisioner:
+      dependencies:
+        - name: _serializers
+          path: .
+      state_top:
+        base:
+          '*':
+            - containerd
+    verifier:
+      inspec_tests:
+        - path: test/integration/clean_purge
+
+  - name: clean
+    includes:
+      - debian-12-3008-5
+    lifecycle:
+      pre_verify:
+        - remote: sudo mkdir -p /var/lib/containerd && echo keep | sudo tee /var/lib/containerd/clean-fixture >/dev/null
+        - remote: sudo salt-call --local --config-dir /tmp/kitchen/etc/salt state.apply containerd.clean
+        - remote: >-
+            sudo salt-call --local --config-dir /tmp/kitchen/etc/salt
+            --log-level=error state.apply containerd.clean
+            > /tmp/containerd-clean-repeat.log
+            && ! grep -q 'changed=' /tmp/containerd-clean-repeat.log
+    provisioner:
+      dependencies:
+        - name: _serializers
+          path: .
+      state_top:
+        base:
+          '*':
+            - containerd
+    verifier:
+      inspec_tests:
+        - path: test/integration/clean
+
   - name: nerdctl
     includes:
       - debian-12-3008-5

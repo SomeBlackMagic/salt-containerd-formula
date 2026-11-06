@@ -1,0 +1,8 @@
+---
+name: clean
+title: containerd clean states
+maintainer: SaltStack Formulas
+license: Apache-2.0
+summary: Verify explicit formula cleanup
+supports:
+  - platform-name: debian

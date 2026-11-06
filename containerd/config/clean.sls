@@ -1,22 +1,28 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_service_clean = tplroot ~ '.service.clean' %}
-{%- from tplroot ~ "/map.jinja" import mapdata as containerd with context %}
+{%- from tplroot ~ '/map.jinja' import mapdata as settings with context %}
 
 include:
-  - {{ sls_service_clean }}
+  - {{ tplroot }}.service.clean
 
 containerd-config-clean-file-absent:
   file.absent:
-    - name: {{ containerd.paths.config_dir }}/config.toml
+    - name: {{ (settings.paths.config_dir ~ '/config.toml') | json }}
     - require:
-      - sls: {{ sls_service_clean }}
+      - sls: {{ tplroot }}.service.clean
 
 containerd-config-clean-dropins-absent:
   file.absent:
-    - name: {{ containerd.paths.config_dir }}/conf.d
+    - name: {{ (settings.paths.config_dir ~ '/conf.d') | json }}
     - require:
-      - sls: {{ sls_service_clean }}
+      - sls: {{ tplroot }}.service.clean
+
+{%- for host, registry in settings.registries | dictsort %}
+containerd-config-clean-registry-{{ loop.index }}-absent:
+  file.absent:
+    - name: {{ (settings.paths.certs_dir ~ '/' ~ host) | json }}
+    - require:
+      - sls: {{ tplroot }}.service.clean
+{%- endfor %}

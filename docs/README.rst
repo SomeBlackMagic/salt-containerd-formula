@@ -250,30 +250,39 @@ the configured binary is present.
 
 *Meta-state (This is a state that includes other states)*.
 
-this state will undo everything performed in the ``containerd`` meta-state in reverse order, i.e.
-stops the service,
-removes the configuration file and
-then uninstalls the package.
-It also removes the two formula-owned kernel prerequisite files.
+Apply this state explicitly to stop and disable the service, remove the
+formula's configuration, unit files, binary links, versioned artifact
+directories, and kernel prerequisite files. It includes the clean states for
+containerd, runc, CNI, crictl, and nerdctl. Registry directories configured
+under ``registries`` are removed; other registry directories are preserved.
+``/var/lib/containerd`` is preserved by default. Set
+``clean.purge_data: true`` to remove it when applying ``containerd.clean``.
 
 ``containerd.service.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will stop the containerd service and disable it at boot time.
+This state stops and disables the service, removes its managed systemd unit and
+override file, and reloads systemd when either file changes.
 
 ``containerd.config.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the containerd service and has a
-dependency on ``containerd.service.clean`` via include list.
-It also removes the ``conf.d`` directory after stopping the service.
+This state removes the main configuration, ``conf.d``, and configured registry
+directories after ``containerd.service.clean`` completes.
 
 ``containerd.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state removes the three managed binary links and the currently selected
-version directory after ``containerd.config.clean``. Older version directories
-remain available for rollback.
+This state removes the three managed binary links and all containerd version
+directories after ``containerd.config.clean`` completes.
+
+``containerd.runc.clean`` and ``containerd.cni.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These states remove their managed binary links and version directories after
+the service stops. CNI network configuration in ``/etc/cni/net.d`` is retained.
+``containerd.crictl.clean`` and ``containerd.nerdctl.clean`` also remove their
+managed configuration files, links, and version directories.
 
 Testing
 -------
