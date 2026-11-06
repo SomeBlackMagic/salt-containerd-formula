@@ -6,5 +6,6 @@ include:
   - .package
   - .runc
   - .cni
+  - .crictl
   - .config
   - .service

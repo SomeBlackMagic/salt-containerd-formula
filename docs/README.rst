@@ -145,6 +145,22 @@ rendering. The default version is ``1.9.1``. Applying this state alone does
 not manage the containerd service. Network configuration under
 ``/etc/cni/net.d`` belongs to the network plugin and is not managed here.
 
+``containerd.crictl``
+^^^^^^^^^^^^^^^^^^^^^
+
+This state includes ``containerd.crictl.install`` and
+``containerd.crictl.config``. Set ``components.crictl.enabled: true`` to
+install the optional pinned tarball and link ``crictl`` into
+``paths.bin_dir``. The artifact uses ``components.crictl.version``, ``url``
+and ``checksums[version][arch]``; a missing checksum stops rendering.
+The config state serializes ``components.crictl.config`` as YAML to
+``/etc/crictl.yaml`` with root ownership and mode ``0644``. The default
+runtime and image endpoints are both
+``unix:///run/containerd/containerd.sock``. Applying this state alone does
+not start containerd; ``crictl info`` requires a running CRI service.
+Apply ``containerd.crictl.clean`` explicitly to remove the config file,
+binary symlink and configured version directory.
+
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 

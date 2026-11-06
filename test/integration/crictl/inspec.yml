@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+name: crictl
+title: crictl installation and configuration
+maintainer: SaltStack Formulas
+license: Apache-2.0
+depends:
+  - name: share
+    path: test/integration/share
+supports:
+  - platform-name: debian
