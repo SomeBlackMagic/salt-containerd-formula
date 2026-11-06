@@ -37,8 +37,8 @@ containerd-service-unit-dropin-file-managed:
       - file: containerd-service-unit-file-managed
 
 containerd-service-unit-daemon-reload:
-  cmd.run:
-    - name: systemctl daemon-reload
+  module.run:
+    - service.systemctl_reload: []
     - onchanges:
       - file: containerd-service-unit-file-managed
       - file: containerd-service-unit-dropin-file-managed

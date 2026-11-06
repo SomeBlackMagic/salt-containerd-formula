@@ -83,6 +83,23 @@ Available states
 This installs the pinned containerd and runc binaries,
 manages the containerd configuration file and then
 starts the associated containerd service.
+It also includes the kernel prerequisites when ``kernel.enabled`` is true.
+
+``containerd.kernel``
+^^^^^^^^^^^^^^^^^^^^^
+
+This opt-in state includes ``containerd.kernel.modules`` and
+``containerd.kernel.sysctl``. It is disabled by default. Configure
+``kernel.modules`` and ``kernel.sysctl`` under the ``containerd`` Pillar.
+The default modules are ``overlay`` and ``br_netfilter``; the default sysctls
+enable IP forwarding and bridge netfilter for IPv4 and IPv6. The states write
+``/etc/modules-load.d/containerd.conf`` and
+``/etc/sysctl.d/90-containerd.conf`` with root ownership and mode ``0644``.
+On a VM, the states also load the modules and apply the sysctl values.
+Docker Kitchen tests verify only the persistent files.
+
+``containerd.kernel.clean`` removes those two files when explicitly applied.
+It does not unload modules or restore live sysctl values.
 
 ``containerd.preflight``
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -176,6 +193,7 @@ this state will undo everything performed in the ``containerd`` meta-state in re
 stops the service,
 removes the configuration file and
 then uninstalls the package.
+It also removes the two formula-owned kernel prerequisite files.
 
 ``containerd.service.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

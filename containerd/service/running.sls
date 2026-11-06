@@ -29,13 +29,13 @@ containerd-service-running-service-running:
 {%- if containerd.service.restart_on_change %}
     - require:
 {%- endif %}
-      - cmd: containerd-service-unit-daemon-reload
+      - module: containerd-service-unit-daemon-reload
 {%- elif containerd.service.state == 'enabled' %}
 containerd-service-running-service-enabled:
   service.enabled:
     - name: {{ containerd.service.name }}
     - require:
-      - cmd: containerd-service-unit-daemon-reload
+      - module: containerd-service-unit-daemon-reload
       - file: containerd-config-file-file-managed
       - file: containerd-config-dropins-directory-clean
 {%- else %}

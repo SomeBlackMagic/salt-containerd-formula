@@ -2,6 +2,7 @@
 # vim: ft=sls
 
 include:
+  - .kernel
   - .package
   - .runc
   - .config

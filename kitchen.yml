@@ -255,6 +255,7 @@ suites:
         base:
           '*':
             - containerd.service
+            - containerd.kernel
     verifier:
       inspec_tests:
         - path: test/integration/service_enabled
