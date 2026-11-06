@@ -22,7 +22,6 @@ control 'containerd.package.install' do
       it { should be_file }
       it { should be_executable }
     end
-
   end
 end
 

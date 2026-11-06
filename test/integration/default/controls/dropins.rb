@@ -18,7 +18,9 @@ control 'containerd.config.dropins' do
     it { should_not exist }
   end
 
-  describe command('/usr/local/bin/containerd --config /etc/containerd/config.toml config dump') do
+  config_path = '/etc/containerd/config.toml'
+  dump_command = "/usr/local/bin/containerd --config #{config_path} config dump"
+  describe command(dump_command) do
     its('exit_status') { should eq 0 }
     its('stdout') { should include 'oom_score = -500' }
   end

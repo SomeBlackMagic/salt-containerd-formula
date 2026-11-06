@@ -61,7 +61,9 @@ control 'containerd.preflight.remove_conflict' do
   title 'The removal option removes a conflict and is idempotent'
 
   fixture_pkg = 'containerd-preflight-fixture'
-  pillar = %('{"containerd":{"conflicts":{"remove":true,"packages":["#{fixture_pkg}"]}}}')
+  pillar = <<~PILLAR.strip
+    '{"containerd":{"conflicts":{"remove":true,"packages":["#{fixture_pkg}"]}}}'
+  PILLAR
   exercise_removal = <<~SH
     set -eu
     dir=$(mktemp -d)

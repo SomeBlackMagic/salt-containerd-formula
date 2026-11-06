@@ -1,9 +1,17 @@
-name: containerd
+name: someblackmagic/containerd-formula
 os: Debian, Ubuntu, RedHat, CentOS, Amazon, Oracle, AlmaLinux, Rocky, SUSE, openSUSE
 os_family: Debian, RedHat, Suse
-version: 1.0.0
+version: 0.1.0-rc1
 release: 1
 minimum_version: 3006
 summary: containerd formula
 description: Formula to install and configure containerd container runtime
 top_level_dir: containerd
+
+maintainers:
+  - name: SomeBlackMagic
+    email: dev@someblackmagic.com
+    github: SomeBlackMagic
+
+authors:
+  - name: SomeBlackMagic

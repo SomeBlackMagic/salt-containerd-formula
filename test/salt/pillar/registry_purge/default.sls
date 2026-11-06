@@ -1,3 +1,4 @@
+---
 containerd:
   registries:
     docker.io:

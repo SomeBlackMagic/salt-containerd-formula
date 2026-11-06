@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 control 'containerd.config.file' do
-  title 'The managed configuration contains the default containerd 2.4 settings and parses successfully'
+  title 'The managed containerd 2.4 configuration parses successfully'
 
   config_path = '/etc/containerd/config.toml'
 

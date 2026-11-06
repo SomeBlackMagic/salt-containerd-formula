@@ -277,7 +277,7 @@ This state removes the three managed binary links and all containerd version
 directories after ``containerd.config.clean`` completes.
 
 ``containerd.runc.clean`` and ``containerd.cni.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 These states remove their managed binary links and version directories after
 the service stops. CNI network configuration in ``/etc/cni/net.d`` is retained.

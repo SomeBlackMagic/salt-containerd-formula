@@ -21,7 +21,9 @@ containerd:
   #   runc:
   #     enabled: true
   #     version: 1.5.2
+  # yamllint disable rule:line-length
   #     url: https://github.com/opencontainers/runc/releases/download/v{version}/runc.{arch}
+  # yamllint enable rule:line-length
   #     checksums:
   #       1.5.2:
   #         amd64: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
@@ -29,7 +31,9 @@ containerd:
   #     enabled: true
   #     version: 1.9.1
   #     dir: /opt/cni/bin
+  # yamllint disable rule:line-length
   #     url: https://github.com/containernetworking/plugins/releases/download/v{version}/cni-plugins-linux-{arch}-v{version}.tgz
+  # yamllint enable rule:line-length
   #     checksums:
   #       1.9.1:
   #         amd64: b98f74a0f8522f0a83867178729c1aa70f2158f90c45a2ca8fa791db1c76b303
