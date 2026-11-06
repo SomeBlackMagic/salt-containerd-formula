@@ -174,3 +174,48 @@ def _render_install(enabled):
 
 def test_disabled_component_emits_no_install_states():
     assert _render_install(False) is None
+
+
+def _render_cni_install(enabled=True, checksums=None):
+    """Render the CNI entrypoint with a controlled map and the artifact macro."""
+    loader = jinja2.ChoiceLoader(
+        [
+            jinja2.DictLoader(
+                {"containerd/map.jinja": "{% set mapdata = test_mapdata %}"}
+            ),
+            jinja2.FileSystemLoader(str(REPO_ROOT)),
+        ]
+    )
+    environment = jinja2.Environment(loader=loader)
+    environment.globals["raise"] = raise_template_error
+    template = environment.get_template("containerd/cni/install.sls")
+    return template.render(
+        tpldir="containerd/cni",
+        test_mapdata={
+            "arch": "amd64",
+            "paths": {"prefix": "/opt/containerd"},
+            "components": {
+                "cni": {
+                    "enabled": enabled,
+                    "version": "1.9.1",
+                    "url": "https://example.test/{version}/{arch}.tgz",
+                    "checksums": checksums if checksums is not None else {
+                        "1.9.1": {"amd64": "cni-checksum"}
+                    },
+                    "dir": "/opt/cni/bin",
+                }
+            },
+        },
+    )
+
+
+def test_disabled_cni_emits_no_install_states():
+    assert yaml.safe_load(_render_cni_install(enabled=False)) is None
+
+
+def test_cni_missing_checksum_stops_render():
+    with pytest.raises(
+        jinja2.TemplateRuntimeError,
+        match="Missing checksum for component 'cni' version '1.9.1' arch 'amd64'",
+    ):
+        _render_cni_install(checksums={})

@@ -5,5 +5,6 @@ include:
   - .kernel
   - .package
   - .runc
+  - .cni
   - .config
   - .service

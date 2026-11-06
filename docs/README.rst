@@ -132,6 +132,19 @@ links it from ``paths.sbin_dir``. The download uses the configured URL and
 Set ``components.runc.enabled: false`` to skip runc installation. Applying
 ``containerd.runc`` by itself does not start the containerd service.
 
+``containerd.cni``
+^^^^^^^^^^^^^^^^^^
+
+This state includes ``containerd.cni.install``. CNI installation is opt-in:
+set ``components.cni.enabled: true``. It extracts the pinned CNI plugins
+tarball into ``<paths.prefix>/cni/<version>/`` and links ``bridge``,
+``loopback`` and ``host-local`` into ``components.cni.dir`` (default
+``/opt/cni/bin``). The tarball uses ``components.cni.url`` and
+``components.cni.checksums[version][arch]``; a missing checksum stops
+rendering. The default version is ``1.9.1``. Applying this state alone does
+not manage the containerd service. Network configuration under
+``/etc/cni/net.d`` belongs to the network plugin and is not managed here.
+
 ``containerd.config``
 ^^^^^^^^^^^^^^^^^^^^^
 

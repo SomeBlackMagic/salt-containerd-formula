@@ -242,6 +242,20 @@ verifier:
     - junit:.kitchen/reports/%{suite}-%{platform}.xml
 
 suites:
+  - name: cni
+    includes:
+      - debian-12-3008-5
+    provisioner:
+      pillars_from_directories:
+        - test/salt/pillar/cni
+      state_top:
+        base:
+          '*':
+            - containerd.cni
+    verifier:
+      inspec_tests:
+        - path: test/integration/cni
+
   - name: service-enabled
     includes:
       - debian-12-3008-5

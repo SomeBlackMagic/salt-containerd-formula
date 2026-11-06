@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+name: cni
+title: CNI plugin installation
+maintainer: SaltStack Formulas
+license: Apache-2.0
+depends:
+  - name: share
+    path: test/integration/share
+supports:
+  - platform-name: debian
