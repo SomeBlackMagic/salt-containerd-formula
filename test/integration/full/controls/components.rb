@@ -23,7 +23,10 @@ end
 control 'containerd.full.kernel' do
   title 'Kernel module and sysctl configuration is persisted'
 
-  %w[/etc/modules-load.d/containerd.conf /etc/sysctl.d/90-containerd.conf].each do |path|
+  %w[
+    /etc/modules-load.d/containerd.conf
+    /etc/sysctl.d/90-containerd.conf
+  ].each do |path|
     describe file(path) do
       it { should be_file }
       it { should be_owned_by 'root' }
@@ -34,7 +37,10 @@ end
 control 'containerd.full.config' do
   title 'Registry, drop-in, and native snapshotter configuration is present'
 
-  %w[/etc/containerd/certs.d/docker.io/hosts.toml /etc/containerd/conf.d/20-oom-score.toml].each do |path|
+  %w[
+    /etc/containerd/certs.d/docker.io/hosts.toml
+    /etc/containerd/conf.d/20-oom-score.toml
+  ].each do |path|
     describe file(path) do
       it { should be_file }
       it { should be_owned_by 'root' }
