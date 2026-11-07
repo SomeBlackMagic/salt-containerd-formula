@@ -1,9 +1,13 @@
 ---
-name: Test & release
+name: Test
 
 'on':
-  - pull_request
-  - push
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -94,84 +98,3 @@ jobs:
           ruby-version: '3.1'
       - run: |
           bin/kitchen verify ${{ matrix.platform }}
-  results:
-    name: Release / Collect results
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      checks: read
-    container: techneg/ci-semantic-release:v1.2.65@sha256:041c4231b1f349c67c0e9fab2c1c47c6c5623708a63bdf1cbc87fd0a100d71ec
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - run: |  # Needed due to bug actions/checkout#2031
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      # yamllint disable-line rule:line-length
-      - uses: poseidon/wait-for-status-checks@e7e24423722c5b8e97a6dd5848827d2a412f812d # v0.7.0
-        with:
-          ignore: >
-            Dependabot,
-            Release / Collect results,
-            Test / Kitchen (debian-12-master),
-            Test / Kitchen (ubuntu-2404-master),
-            Test / Kitchen (ubuntu-2204-master),
-            Test / Kitchen (centos-stream9-master),
-          ignore_pattern: ^GitLab CI
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run `semantic-release`
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAINTAINER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          semantic-release --dry-run
-      - run: echo "::notice ::Workflow success!"
-
-  salt-bundle-release:
-    name: Release / Salt Bundle
-    needs:
-      - should-run
-      # - test
-    # Publishing is opt-in and only happens from a version tag after all
-    # Kitchen jobs pass. The tag is verified against FORMULA below.
-    if: >-
-      github.event_name == 'push' &&
-      startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: write
-    environment:
-      name: release
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-      - name: Verify release version
-        id: version
-        env:
-          TAG_VERSION: ${{ github.ref_name }}
-        run: |
-          tag_version="${TAG_VERSION#v}"
-          formula_version="$(sed -n -E 's/^version:[[:space:]]*//p' FORMULA)"
-
-          if [[ -z "$formula_version" ]]; then
-            echo "::WARNING file=FORMULA::Version is missing"
-          fi
-
-          if [[ "$tag_version" != "$formula_version" ]]; then
-            echo "::WARNING file=FORMULA::Tag version '$tag_version' does not match" \
-              "FORMULA version '$formula_version'"
-          fi
-
-          echo "version=$tag_version" >> "$GITHUB_OUTPUT"
-
-      - name: Publish via salt-bundle
-        # yamllint disable-line rule:line-length
-        uses: SomeBlackMagic/salt-bundle/.github/actions/salt-bundle-release@d1cb0cf15c9e7534344a37da2b2ddaba007db82e
-        with:
-          index-branch: gh-pages
-          packages-dir: .
-          version: ${{ steps.version.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}

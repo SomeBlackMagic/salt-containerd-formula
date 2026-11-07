@@ -1,0 +1,51 @@
+---
+name: Release
+
+'on':
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    name: Release / Salt Bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    environment:
+      name: release
+    container: techneg/ci-semantic-release:v1.2.65@sha256:041c4231b1f349c67c0e9fab2c1c47c6c5623708a63bdf1cbc87fd0a100d71ec
+    steps:
+      - run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Run `semantic-release`
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAINTAINER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          semantic-release | tee /tmp/sr-output.log
+          version="$(grep -oP \
+            'Published release \K[0-9]+\.[0-9]+\.[0-9]+' \
+            /tmp/sr-output.log || true)"
+          if [[ -z "$version" ]]; then
+            echo "::notice ::No new release needed"
+            echo "released=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+            echo "released=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish via salt-bundle
+        if: steps.semantic.outputs.released == 'true'
+        # yamllint disable-line rule:line-length
+        uses: SomeBlackMagic/salt-bundle/.github/actions/salt-bundle-release@d1cb0cf15c9e7534344a37da2b2ddaba007db82e
+        with:
+          index-branch: gh-pages
+          packages-dir: .
+          version: ${{ steps.semantic.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
