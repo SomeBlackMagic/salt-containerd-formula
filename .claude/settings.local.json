@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bundle exec:*)",
+      "Bash(/tmp/quality_analysis.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(sed -n '2p' test/integration/default/files/_mapdata/debian-13.yaml)",
+      "Bash(sed -n '2p' test/integration/default/files/_mapdata/fedora-43.yaml)",
+      "Bash(sed -n '2p' test/integration/default/files/_mapdata/fedora-44.yaml)",
+      "Bash(sed -n '2p' test/integration/default/files/_mapdata/opensuse-16.yaml)",
+      "Bash(sed -n '2p' test/integration/default/files/_mapdata/ubuntu-26.yaml)",
+      "Bash(gh release:*)",
+      "Bash(cat /tmp/checksums/containerd-2.4.2-linux-*.tar.gz.sha256sum)",
+      "Bash(cat /tmp/checksums/cni-plugins-linux-*-v1.9.1.tgz.sha256)",
+      "Bash(docker exec:*)",
+      "Bash(docker info:*)",
+      "Bash(docker context:*)",
+      "Bash(docker rm:*)",
+      "Bash(rm -f /home/wir_wolf/Work/SomeBlackMagic/salt-containerd-formula/.kitchen/default-centos-stream9-master.yml)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
