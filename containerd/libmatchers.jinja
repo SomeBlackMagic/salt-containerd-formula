@@ -175,10 +175,12 @@
             ~ "'"
           ) %}
 {%-     else %}
-{%-       if cli in ["ssh", "unknown"] %}
+{%-       if cli in ["ssh", "unknown"]
+            and parsed.query_method == "config.get"
+            and (config_get_strategy or parsed.query_delimiter != ":") %}
 {%-         do salt["log.warning"](
               log_prefix
-              ~ "the 'delimiter' and 'merge' options of 'config.get' are skipped when the salt command type is '"
+              ~ "a custom 'delimiter' or 'merge' option of 'config.get' is skipped when the salt command type is '"
               ~ cli
               ~ "'"
             ) %}
