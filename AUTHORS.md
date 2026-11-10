@@ -4,7 +4,7 @@ This list is sorted by the number of commits per contributor in _descending_ ord
 
 Avatar|Contributor|Contributions
 :-:|---|:-:
-<img class='float-left rounded-1' src='https://avatars.githubusercontent.com/u/8457572?v=4' width='36' height='36' alt='@wirwolf'>|[@wirwolf](https://github.com/wirwolf)|30
+<img class='float-left rounded-1' src='https://avatars.githubusercontent.com/u/8457572?v=4' width='36' height='36' alt='@wirwolf'>|[@wirwolf](https://github.com/wirwolf)|31
 
 ---
 

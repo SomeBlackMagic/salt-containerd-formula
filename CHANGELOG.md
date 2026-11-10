@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/SomeBlackMagic/salt-containerd-formula/compare/v1.0.1...v1.0.2) (2026-11-10)
+
+### Bug Fixes
+
+* exclude local and test files from formula package ([2df3817](https://github.com/SomeBlackMagic/salt-containerd-formula/commit/2df38176d9684d78303a6f8920e9903ccc37bf13))
+
 ## [1.0.1](https://github.com/SomeBlackMagic/salt-containerd-formula/compare/v1.0.0...v1.0.1) (2026-11-10)
 
 ### Bug Fixes

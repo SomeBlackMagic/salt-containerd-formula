@@ -1,7 +1,7 @@
 name: someblackmagic/containerd-formula
 os: Debian, Ubuntu, RedHat, CentOS, Amazon, Oracle, AlmaLinux, Rocky, SUSE, openSUSE
 os_family: Debian, RedHat, Suse
-version: 1.0.1
+version: 1.0.2
 release: 1
 minimum_version: 3006
 summary: containerd formula
