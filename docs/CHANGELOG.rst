@@ -2,6 +2,21 @@
 Changelog
 =========
 
+`1.0.1 <https://github.com/SomeBlackMagic/salt-containerd-formula/compare/v1.0.0...v1.0.1>`_ (2026-11-10)
+-------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* warn only for custom config.get options (\ `c139a93 <https://github.com/SomeBlackMagic/salt-containerd-formula/commit/c139a930be98a35e0c4c878cf138172843663995>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* split release workflow from tests (\ `3947110 <https://github.com/SomeBlackMagic/salt-containerd-formula/commit/394711098fec7aac81a1315239ca74a5b3218c26>`_\ )
+
 1.0.0 (2026-11-07)
 ------------------
 
