@@ -133,3 +133,4 @@ top.sls
 # `suricata-formula` -- Platform binaries
 *.rpm
 *.deb
+.claude

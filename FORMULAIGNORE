@@ -16,3 +16,6 @@ kitchen.yml
 pre-commit_semantic-release.sh
 release.config.js
 commitlint.config.js
+.claude
+test
+LICENSE
